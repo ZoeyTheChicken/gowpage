@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gears of War Server Wiki</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f6f6f6;
+            --bg-sidebar: #f8f9fa;
+            --text-primary: #202122;
+            --text-secondary: #54595d;
+            --border: #a2a9b1;
+            --link: #0645ad;
+            --link-visited: #0b0080;
+            --link-hover: #0b0080;
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #202122;
+            --bg-secondary: #27292a;
+            --bg-sidebar: #27292a;
+            --text-primary: #eaecf0;
+            --text-secondary: #a2a9b1;
+            --border: #3f4142;
+            --link: #6b9eff;
+            --link-visited: #9b7ed4;
+            --link-hover: #94b3ff;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .site-header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 0;
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .site-logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            border-radius: 2px;
+        }
+        
+        /* Main Layout */
+        .wiki-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            padding: 1.5rem;
+        }
+        
+        /* Sidebar Navigation */
+        .sidebar {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            height: fit-content;
+            position: sticky;
+            top: 1.5rem;
+        }
+        
+        .sidebar h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar li {
+            margin: 0;
+        }
+        
+        .sidebar a {
+            display: block;
+            padding: 0.4rem 0.5rem;
+            color: var(--link);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Main Content */
+        .content {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 2rem;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Table of Contents */
+        .toc {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            display: inline-block;
+            min-width: 250px;
+        }
+        
+        .toc-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .toc li {
+            margin: 0.3rem 0;
+        }
+        
+        .toc a {
+            color: var(--link);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Sections */
+        section {
+            margin-bottom: 2.5rem;
+        }
+        
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.3rem;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+        
+        h2:first-child {
+            margin-top: 0;
+        }
+        
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        h5 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Info Boxes */
+        .infobox {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            float: right;
+            margin: 0 0 1rem 1rem;
+            padding: 1rem;
+            width: 280px;
+            font-size: 0.875rem;
+        }
+        
+        .infobox-title {
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .infobox-row {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 0.5rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .infobox-row:last-child {
+            border-bottom: none;
+        }
+        
+        .infobox-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .infobox-value {
+            color: var(--text-secondary);
+        }
+        
+        /* Notice boxes */
+        .notice {
+            background: var(--bg-sidebar);
+            border-left: 4px solid var(--link);
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        /* Tables */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.6rem;
+            text-align: left;
+        }
+        
+        th {
+            background: var(--bg-sidebar);
+            font-weight: 600;
+        }
+        
+        /* Player/Nation Cards */
+        .entry {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .entry:last-child {
+            border-bottom: none;
+        }
+        
+        .entry-header {
+            margin-bottom: 1rem;
+        }
+        
+        .entry-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: inline;
+        }
+        
+        .rank {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.6rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .entry-meta {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin: 0.5rem 0;
+        }
+        
+        .entry-meta strong {
+            color: var(--text-primary);
+        }
+        
+        .wars-list {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .wars-list h5 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .wars-list ul {
+            margin: 0.5rem 0 0 1.5rem;
+        }
+        
+        /* War Sections */
+        .war {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .war-header {
+            margin-bottom: 1rem;
+        }
+        
+        .war-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .war-duration {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+        
+        .belligerents {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .side {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 1rem;
+        }
+        
+        .side h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .vs {
+            font-size: 1.25rem;
+            font-weight: 600;
+            align-self: center;
+            text-align: center;
+        }
+        
+        /* Timeline */
+        .timeline {
+            border-left: 2px solid var(--border);
+            padding-left: 2rem;
+            margin-left: 1rem;
+        }
+        
+        .timeline-item {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.4rem;
+            top: 0.3rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 2px solid var(--border);
+        }
+        
+        .timeline-date {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        /* Ownership Timeline specific styles */
+        .ownership-timeline .timeline-item::before {
+            background: var(--link);
+            border-color: var(--link);
+            width: 12px;
+            height: 12px;
+            left: -2.5rem;
+        }
+
+        .ownership-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 0.85rem 1rem;
+            margin-top: 0.15rem;
+        }
+
+        .ownership-card .owner-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        .ownership-card .owner-period {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        .ownership-card .owner-notes {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.45rem;
+            padding-top: 0.45rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .ownership-card .owner-notes strong {
+            color: var(--text-primary);
+        }
+
+        .ownership-arrow {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin: 0.5rem 0 0.5rem 0.25rem;
+            position: relative;
+            left: -2.5rem;
+            padding-left: 1.85rem;
+        }
+        
+        /* Lists */
+        ul, ol {
+            margin: 0.75rem 0 0.75rem 1.5rem;
+        }
+        
+        li {
+            margin: 0.3rem 0;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--bg-sidebar);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .wiki-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                margin-bottom: 1rem;
+            }
+            
+            .infobox {
+                float: none;
+                width: 100%;
+                margin: 1rem 0;
+            }
+            
+            .belligerents {
+                grid-template-columns: 1fr;
+            }
+            
+            .vs {
+                padding: 0.5rem 0;
+            }
+        }
+        
+        /* Links */
+        a {
+            color: var(--link);
+            text-decoration: none;
+        }
+        
+        a:visited {
+            color: var(--link-visited);
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Utility */
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div class="site-header">
+        <div class="header-container">
+            <div class="site-logo">⚔️ Gears of War Server Wiki</div>
+            <button class="theme-toggle" id="themeToggle">
+                <span id="themeText">Dark Mode</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="wiki-container">
+        <nav class="sidebar">
+            <h3>Contents</h3>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#ownership">Server Ownership</a></li>
+                <li><a href="#players">Players</a></li>
+                <li><a href="#nations">Nations</a></li>
+                <li><a href="#wars">Wars</a></li>
+                <li><a href="#timeline">Timeline</a></li>
+            </ul>
+        </nav>
+        
+        <main class="content">
+            <h1 class="page-title">Gears of War Server Wiki</h1>
+            <p class="subtitle">Complete Archives & Historical Documentation (February 2023 - July 2024)</p>
+            
+            <div class="toc">
+                <div class="toc-title">Contents</div>
+                <ul>
+                    <li><a href="#overview">1 Overview</a></li>
+                    <li><a href="#ownership">2 Server Ownership</a></li>
+                    <li><a href="#players">3 Players</a></li>
+                    <li><a href="#nations">4 Nations</a></li>
+                    <li><a href="#wars">5 Wars</a>
+                        <ul style="margin-left: 1rem;">
+                            <li><a href="#wars">5.1 4th Reich-Caveville Conflict</a></li>
+                            <li><a href="#wars">5.2 Astro-Cavevillian War</a></li>
+                            <li><a href="#wars">5.3 Cold War I</a></li>
+                            <li><a href="#wars">5.4 Flareia VS Caveville War I</a></li>
+                            <li><a href="#wars">5.5 Flareian-Caveville War II</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#timeline">6 Timeline</a></li>
+                </ul>
+            </div>
+            
+            <section id="overview">
+                <h2>Overview</h2>
+                
+                <div class="infobox">
+                    <div class="infobox-title">Server Information</div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Type</div>
+                        <div class="infobox-value">Minecraft Survival/Nations</div>
+                    </div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Active</div>
+                        <div class="infobox-value">Feb 18, 2023 - Jul 12, 2024</div>
+                    </div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Duration</div>
+                        <div class="infobox-value">17 months</div>
+                    </div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Founders</div>
+                        <div class="infobox-value">Tig (original owner)</div>
+                    </div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Final Owner</div>
+                        <div class="infobox-value">Minishyft6243</div>
+                    </div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Wiki by</div>
+                        <div class="infobox-value">Minishyft6243</div>
+                    </div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Total Owners</div>
+                        <div class="infobox-value">5</div>
+                    </div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Major Wars</div>
+                        <div class="infobox-value">5</div>
+                    </div>
+                    <div class="infobox-row">
+                        <div class="infobox-label">Nations</div>
+                        <div class="infobox-value">10+</div>
+                    </div>
+                </div>
+                
+                <p>The Gears of War server began as a creative Minecraft server on February 18, 2023, before transforming into one of the most dynamic survival nations servers. Over its 17-month lifespan, the server witnessed the rise and fall of empires, devastating wars, complex alliances, and player-driven geopolitical drama that would ultimately culminate in its dramatic conclusion in July 2024.</p>
+
+                <p style="margin-top: 0.75rem;">Ownership of the server changed hands five times throughout its history, passing from its original creator Tig through several players before ultimately landing with Minishyft6243, who held it for the server's final and longest stretch.</p>
+            </section>
+
+            <section id="ownership">
+                <h2>Server Ownership</h2>
+                <p>The Gears of War server changed ownership five times over its lifespan. The server was passed between players at various points, reflecting the shifting power dynamics and activity levels on the server.</p>
+
+                <div class="notice">
+                    <strong>📜 Note on Dates:</strong> Exact handover dates for most ownership transfers are not known. The periods listed below are rough approximations based on available server records and player accounts. Only Tig's starting date (February 18, 2023) and Minishyft's end date (July 12, 2024) are confirmed with certainty.
+                </div>
+
+                <div class="timeline ownership-timeline">
+
+                    <div class="timeline-item">
+                        <div class="ownership-card">
+                            <div class="owner-name">Tig <span style="font-weight:400; font-size:0.85rem; color: var(--text-secondary);">(1st Owner)</span></div>
+                            <div class="owner-period">February 18, 2023 – ~February 26, 2023</div>
+                            <div class="owner-notes"><strong>Notes:</strong> The original creator and first owner of the server. Tig launched the Gears of War server as a creative Minecraft world. He was notably present at the server's creation but did not notice when Minishyft6243 and ZoeyDev left spawn to plant 20,000 TNT blocks. Tig oversaw the server's transition from creative to survival mode on February 21, 2023, before ownership was passed on roughly a week later.</div>
+                        </div>
+                        <div class="ownership-arrow">▼</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="ownership-card">
+                            <div class="owner-name">Ice <span style="font-weight:400; font-size:0.85rem; color: var(--text-secondary);">(2nd Owner)</span></div>
+                            <div class="owner-period">~February 26, 2023 – ~March 2023</div>
+                            <div class="owner-notes"><strong>Notes:</strong> Ice took over ownership during one of the server's most turbulent early periods. His tenure coincided with the Astro-Cavevillian War, the 4th Reich-Caveville Conflict, the formation of the Reichpakt alliance, and Cold War I. Ice was also an active military commander during this time, serving as a co-leader of the Caveville/E forces in the Astro-Cavevillian War alongside Zoey and Squad.</div>
+                        </div>
+                        <div class="ownership-arrow">▼</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="ownership-card">
+                            <div class="owner-name">Herodelombre <span style="font-weight:400; font-size:0.85rem; color: var(--text-secondary);">(3rd Owner)</span></div>
+                            <div class="owner-period">~March 2023 – ~April 2023</div>
+                            <div class="owner-notes"><strong>Notes:</strong> Herodelombre held ownership during the aftermath of the Reichpakt collapse and the lead-up to the first Flareia-Caveville conflict. He was also the founder of the nation of Canada, having established it on February 27, 2023 with Quebec as its capital. His ownership period was relatively short, spanning roughly one month before the server was passed along again.</div>
+                        </div>
+                        <div class="ownership-arrow">▼</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="ownership-card">
+                            <div class="owner-name">Zoey <span style="font-weight:400; font-size:0.85rem; color: var(--text-secondary);">(4th Owner)</span></div>
+                            <div class="owner-period">~April 2023 – ~June 2023</div>
+                            <div class="owner-notes"><strong>Notes:</strong> Zoey took ownership around the time CraftedYT quit the server. As one of the server's founding players and the long-standing leader of Caveville, Zoey was already one of the most influential figures on the server before becoming its owner. His ownership period covered the tail end of Flareia VS Caveville War I and the beginning of the 13-month silent conflict period between the two superpowers. There is a gap of roughly two months between Zoey's ownership ending and Minishyft taking over — it is unclear who, if anyone, held ownership during this time.</div>
+                        </div>
+                        <div class="ownership-arrow">▼</div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="ownership-card">
+                            <div class="owner-name">Minishyft6243 <span style="font-weight:400; font-size:0.85rem; color: var(--text-secondary);">(5th & Final Owner)</span></div>
+                            <div class="owner-period">~August 2023 – July 12, 2024</div>
+                            <div class="owner-notes"><strong>Notes:</strong> Minishyft held ownership for the longest stretch of any single owner — nearly 11 months. His tenure covered the entirety of the silent conflict period, the outbreak and conclusion of Flareian-Caveville War II, and the server's final days. As the leader of Flareia and the instigator of both major Flareia-Caveville wars, Minishyft was both owner and one of the primary drivers of the server's final chapter. He also compiled this wiki after the server's end.</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <table style="margin-top: 1.75rem;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Owner</th>
+                            <th>Approximate Period</th>
+                            <th>Nation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Tig</td>
+                            <td>Feb 18 – ~Feb 26, 2023</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Ice</td>
+                            <td>~Feb 26 – ~Mar 2023</td>
+                            <td>Caveville / E</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Herodelombre</td>
+                            <td>~Mar – ~Apr 2023</td>
+                            <td>Canada</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Zoey</td>
+                            <td>~Apr – ~Jun 2023</td>
+                            <td>Caveville</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Minishyft6243</td>
+                            <td>~Aug 2023 – Jul 12, 2024</td>
+                            <td>Flareia</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <section id="players">
+                <h2>Players</h2>
+                <p>The following is a comprehensive list of all documented players on the Gears of War server, ranked by their influence and importance to server history.</p>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#1</span>
+                        <h3 class="entry-title">Minishyft6243</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Website Owner, War Instigator, 5th Server Owner</div>
+                    <div class="entry-meta"><strong>Nation:</strong> Flareia</div>
+                    <p>The most influential player on the server and website owner. Known for starting both major Flareia-Caveville wars "just for fun." Participated in the legendary TNT incident at server launch with Zoey, spawning 20,000 TNT blocks in a mountain near spawn. His actions directly shaped the server's most significant conflicts. Became the server's final owner around August 2023 and held ownership until the server's end.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Flareia VS Caveville War I (Instigator)</li>
+                            <li>Flareian-Caveville War II (Instigator)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#2</span>
+                        <h3 class="entry-title">ZoeyDev (Zoeyaviation)</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Military Leader, Cold War Commander, 4th Server Owner</div>
+                    <div class="entry-meta"><strong>Nation:</strong> Caveville</div>
+                    <p>One of the server's founding players and a key military strategist. Led Caveville forces during the Cold War I and the Astro-Cavevillian War. Partner in the infamous TNT incident at server creation. Known for strong opposition to CraftedYT and instrumental in multiple Caveville victories. Served as the server's 4th owner from roughly April to June 2023.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (Leader)</li>
+                            <li>Cold War I (Commander - Caveville)</li>
+                            <li>Flareia VS Caveville War I</li>
+                            <li>Flareian-Caveville War II</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#3</span>
+                        <h3 class="entry-title">CraftedYT</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Nation Founder, Controversial Figure</div>
+                    <div class="entry-meta"><strong>Nations:</strong> Petram, Asgrothia, Deutschland</div>
+                    <p>Founder of Petram and one of the most controversial players on the server. Immediately declared war on Caveville after nation founding. Despite military defeats, helped establish the Reichpakt alliance. Widely disliked by other players and blamed for starting Cold War I. Quit the server in early April 2023 after the collapse of the Reichpakt.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (Leader - Asgrothia)</li>
+                            <li>Cold War I (Blamed for starting)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#4</span>
+                        <h3 class="entry-title">ConnorHero (Now ConnorTheHeroic)</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Status:</strong> Active (Username changed)</div>
+                    <p>An important member of the server community who remained active throughout the server's lifespan. Changed username from ConnorHero to ConnorTheHeroic during the server's history.</p>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#5</span>
+                        <h3 class="entry-title">Pumice</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Alliance Leader, Nation Owner</div>
+                    <div class="entry-meta"><strong>Nation:</strong> E</div>
+                    <p>Small but significant member who owned the nation of E. Became a major player during Cold War I as the commander of the Reichpakt alliance forces. Helped establish the Reichpakt with Deutschland, Cherokee, and Petram.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Cold War I (Commander - Reichpakt)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#6</span>
+                        <h3 class="entry-title">Dino</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Nation Founder</div>
+                    <div class="entry-meta"><strong>Nation:</strong> Texas (Capital: Austin)</div>
+                    <p>Founder and leader of the small but notable nation of Texas. Established Austin as the capital city and maintained the nation throughout the server's history.</p>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#7</span>
+                        <h3 class="entry-title">FuntimeFoxyBoy</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Status:</strong> New username unknown</div>
+                    <p>Notable player who participated in server activities. Known for opposing CraftedYT alongside Zoey. Current username unknown.</p>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#8</span>
+                        <h3 class="entry-title">Ice</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Military Commander, 2nd Server Owner</div>
+                    <div class="entry-meta"><strong>Nation:</strong> Caveville/E</div>
+                    <p>Co-leader during the Astro-Cavevillian War. Fought alongside Zoey and Squad in defending Caveville/E against Asgrothia. Served as the server's 2nd owner from roughly late February to March 2023, a period that saw some of the server's earliest and most chaotic conflicts.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (Co-Leader)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#9</span>
+                        <h3 class="entry-title">Squad</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Military Commander</div>
+                    <div class="entry-meta"><strong>Nation:</strong> Caveville/E</div>
+                    <p>Co-leader during the Astro-Cavevillian War. Fought alongside Zoey and Ice in the conflict against Asgrothia.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (Co-Leader)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#10</span>
+                        <h3 class="entry-title">Herodelombre</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Nation Founder, 3rd Server Owner</div>
+                    <div class="entry-meta"><strong>Nation:</strong> Canada (Capital: Quebec)</div>
+                    <p>Founded the nation of Canada on February 27, 2023, with Quebec as its capital. Herodelombre later became the server's 3rd owner, holding the position from roughly March to April 2023 — a period that followed the Reichpakt collapse and preceded the first Flareia-Caveville war.</p>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#11</span>
+                        <h3 class="entry-title">Nightmare</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Status:</strong> Username history unknown</div>
+                    <p>Notable player whose previous and current usernames remain unknown. Contributed to server activities during its active period.</p>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#12</span>
+                        <h3 class="entry-title">Tig</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Role:</strong> Server Creator & 1st Owner</div>
+                    <p>The original creator and first owner of the Gears of War server. Present at the server's creation but famously didn't realize when Minishyft and Zoey left spawn to plant TNT. Oversaw the server's transition from creative to survival mode before passing ownership to Ice around late February 2023.</p>
+                </div>
+            </section>
+            
+            <section id="nations">
+                <h2>Nations</h2>
+                <p>A comprehensive listing of all nations that existed on the Gears of War server, ranked by their historical significance and impact.</p>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#1</span>
+                        <h3 class="entry-title">Caveville</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> February 21, 2023</div>
+                    <div class="entry-meta"><strong>Capital:</strong> Caveville (formerly East Caveville)</div>
+                    <div class="entry-meta"><strong>Leaders:</strong> Zoey, Ice, Squad</div>
+                    <div class="entry-meta"><strong>Status:</strong> Destroyed (July 2024)</div>
+                    <p>The most dominant and longest-lasting nation on the server. Originally started as a small settlement after the server switched to survival mode, it quickly expanded and split into East Caveville (the original) and Caveville (the expansion). Won the Astro-Cavevillian War and likely Cold War I. After the Reichpakt collapse on March 4, 2023, absorbed all former Reichpakt territories, becoming a superpower. By April 1, 2023, one of only two major nations remaining with approximately 3 members. Engaged in a 13-month silent conflict with Flareia before being destroyed in the final war.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (Victor)</li>
+                            <li>Cold War I (Likely Victor)</li>
+                            <li>Flareia VS Caveville War I</li>
+                            <li>Flareian-Caveville War II (Destroyed)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#2</span>
+                        <h3 class="entry-title">Flareia</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> Early 2023</div>
+                    <div class="entry-meta"><strong>Leader:</strong> Minishyft6243</div>
+                    <div class="entry-meta"><strong>Status:</strong> Destroyed (July 2024)</div>
+                    <p>The second major superpower on the server and Caveville's primary rival. By April 1, 2023, Flareia had approximately 5 members, giving it a numerical advantage over Caveville. Flareia was allied with Caveville during Cold War I against the Reichpakt. After the war, the alliance broke down, leading to the first Flareia-Caveville War started by Minishyft in March 2023. Despite being bombed in both major wars, Flareia recovered from the first conflict and remained a dominant force until the server's end.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Cold War I (Allied with Caveville)</li>
+                            <li>Flareia VS Caveville War I</li>
+                            <li>Flareian-Caveville War II (Destroyed)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#3</span>
+                        <h3 class="entry-title">Deutschland</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> February 25, 2023 (Reformed from Asgrothia/Petram)</div>
+                    <div class="entry-meta"><strong>Former Names:</strong> Asgrothia, Petram</div>
+                    <div class="entry-meta"><strong>Leader:</strong> CraftedYT</div>
+                    <div class="entry-meta"><strong>Status:</strong> Destroyed (March 4, 2023)</div>
+                    <p>Originally founded as Petram by CraftedYT on February 23, 2023, branching off from East Caveville. After the Astro-Cavevillian War defeat, Asgrothia separated from Petram, and both nations reformed into Deutschland. Deutschland became a founding member of the Reichpakt alliance on March 1, 2023. The nation was wiped from the server when the Reichpakt collapsed on March 4, 2023, with its territories absorbed by Caveville.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (As Asgrothia - Defeated)</li>
+                            <li>Cold War I (As part of Reichpakt - Defeated)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#4</span>
+                        <h3 class="entry-title">E</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> Early 2023</div>
+                    <div class="entry-meta"><strong>Leader:</strong> Pumice</div>
+                    <div class="entry-meta"><strong>Status:</strong> Active until server end</div>
+                    <p>A small but strategically important nation owned by Pumice. E was closely allied with Caveville throughout most of the server's history. During Cold War I, E was part of the Caveville alliance while Pumice simultaneously commanded the opposing Reichpakt forces, creating a unique political situation. E participated in the Astro-Cavevillian War alongside Caveville.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (Allied with Caveville)</li>
+                            <li>Cold War I (Allied with Caveville)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#5</span>
+                        <h3 class="entry-title">Asgrothia</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> February 23-24, 2023</div>
+                    <div class="entry-meta"><strong>Leader:</strong> CraftedYT</div>
+                    <div class="entry-meta"><strong>Status:</strong> Reformed into Deutschland (February 25, 2023)</div>
+                    <p>Originally part of Petram, Asgrothia was the aggressor in the first major server conflict. The Astro-Cavevillian War lasted only one day (February 24-25, 2023) and ended in defeat. After the war, Asgrothia separated from Petram and both nations reformed into Deutschland. The nation's defeat marked the beginning of CraftedYT's controversial reputation on the server.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (Defeated)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#6</span>
+                        <h3 class="entry-title">Petram</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> February 23, 2023</div>
+                    <div class="entry-meta"><strong>Leader:</strong> CraftedYT</div>
+                    <div class="entry-meta"><strong>Status:</strong> Reformed into Deutschland, then destroyed (March 4, 2023)</div>
+                    <p>The original nation founded by CraftedYT by branching off from East Caveville. Immediately declared war on Caveville upon founding. After the Astro-Cavevillian War, reformed into Deutschland alongside Asgrothia. Became part of the Reichpakt alliance before being wiped from the server during the alliance's collapse.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Astro-Cavevillian War (As part of Asgrothia)</li>
+                            <li>Cold War I (As part of Reichpakt via Deutschland)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#7</span>
+                        <h3 class="entry-title">Texas</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> 2023</div>
+                    <div class="entry-meta"><strong>Capital:</strong> Austin</div>
+                    <div class="entry-meta"><strong>Leader:</strong> Dino</div>
+                    <div class="entry-meta"><strong>Status:</strong> Small nation, active until server end</div>
+                    <p>A small but notable nation founded by Dino. Texas maintained its independence throughout the server's history with Austin serving as its capital. While not involved in major conflicts, Texas represented the smaller nations that existed alongside the superpowers of Caveville and Flareia.</p>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#8</span>
+                        <h3 class="entry-title">Cherokee</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> Before March 1, 2023</div>
+                    <div class="entry-meta"><strong>Status:</strong> Destroyed (March 4, 2023)</div>
+                    <p>A member nation of the Reichpakt alliance. Cherokee joined the alliance alongside Deutschland, E, and Petram on March 1, 2023. The nation participated in Cold War I on the Reichpakt side. When the Reichpakt collapsed on March 4, 2023, Cherokee was wiped from the server along with all other alliance members.</p>
+                    <div class="wars-list">
+                        <h5>Wars Participated</h5>
+                        <ul>
+                            <li>Cold War I (As part of Reichpakt - Defeated)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#9</span>
+                        <h3 class="entry-title">Canada</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> February 27, 2023</div>
+                    <div class="entry-meta"><strong>Capital:</strong> Quebec</div>
+                    <div class="entry-meta"><strong>Leader:</strong> Herodelombre</div>
+                    <div class="entry-meta"><strong>Status:</strong> Small nation</div>
+                    <p>A small nation founded by Herodelombre on February 27, 2023. Canada established Quebec as its capital and remained neutral in most server conflicts. Represented one of the minor powers that existed during the early server period.</p>
+                </div>
+                
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="rank">#10</span>
+                        <h3 class="entry-title">Munich</h3>
+                    </div>
+                    <div class="entry-meta"><strong>Founded:</strong> February 25, 2023 (Post Astro-Cavevillian War)</div>
+                    <div class="entry-meta"><strong>Status:</strong> Unknown</div>
+                    <p>Munich was established as one of the consequences of the Astro-Cavevillian War. The nation emerged alongside Deutschland after the conflict ended. Limited information is available about Munich's activities or ultimate fate.</p>
+                </div>
+            </section>
+            
+            <section id="wars">
+                <h2>Wars</h2>
+                <p>The Gears of War server witnessed five major military conflicts that shaped its political landscape and ultimately led to its conclusion.</p>
+                
+                <div class="war">
+                    <div class="war-header">
+                        <h3 class="war-title">4th Reich-Caveville Conflict</h3>
+                        <span class="war-duration">~2 Day War</span>
+                    </div>
+                    <p><strong>Duration:</strong> February 24-26, 2023 (estimated ~2 days)</p>
+                    <p><strong>Cause:</strong> Unknown - Started alongside the Astro-Cavevillian War</p>
+                    
+                    <div class="belligerents">
+                        <div class="side">
+                            <h5>Deutschland</h5>
+                            <ul>
+                                <li>Leader: Unknown</li>
+                            </ul>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="side">
+                            <h5>Caveville</h5>
+                            <ul>
+                                <li>Leaders: Unknown</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4>Outcome</h4>
+                    <p><strong>Victor:</strong> Draw (estimated)</p>
+                    
+                    <div class="notice">
+                        <strong>Note:</strong> Very little is known about the 4th Reich-Caveville Conflict. This war occurred concurrently with the Astro-Cavevillian War and details remain scarce from server archives.
+                    </div>
+                </div>
+                
+                <div class="war">
+                    <div class="war-header">
+                        <h3 class="war-title">Astro-Cavevillian War</h3>
+                        <span class="war-duration">1 Day War</span>
+                    </div>
+                    <p><strong>Duration:</strong> February 24-25, 2023 (1 day)</p>
+                    <p><strong>Cause:</strong> CraftedYT founded Petram and immediately declared war on Caveville</p>
+                    
+                    <div class="belligerents">
+                        <div class="side">
+                            <h5>Asgrothia</h5>
+                            <ul>
+                                <li>Leader: CraftedYT</li>
+                            </ul>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="side">
+                            <h5>Caveville/E Coalition</h5>
+                            <ul>
+                                <li>Leaders: Zoey, Ice, Squad</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4>Outcome</h4>
+                    <p><strong>Victor:</strong> Caveville/E</p>
+                    <p><strong>Consequences:</strong></p>
+                    <ul>
+                        <li>End of Asgrothia as independent nation</li>
+                        <li>Formation of Munich</li>
+                        <li>Reformation of Asgrothia and Petram into Deutschland</li>
+                        <li>Establishment of the Reichpakt alliance</li>
+                        <li>Beginning of CraftedYT's controversial reputation</li>
+                    </ul>
+                </div>
+                
+                <div class="war">
+                    <div class="war-header">
+                        <h3 class="war-title">Cold War I</h3>
+                        <span class="war-duration">2 Day War</span>
+                    </div>
+                    <p><strong>Duration:</strong> March 1-3, 2023 (2 days)</p>
+                    <p><strong>Cause:</strong> CraftedYT blamed for starting the conflict; tensions between Reichpakt and Caveville</p>
+                    
+                    <div class="belligerents">
+                        <div class="side">
+                            <h5>Reichpakt Alliance</h5>
+                            <ul>
+                                <li>Commander: Pumice</li>
+                                <li>Horizon Confed</li>
+                                <li>Reichpakt</li>
+                                <li>Deutschland</li>
+                                <li>Cherokee</li>
+                                <li>Petram</li>
+                            </ul>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="side">
+                            <h5>Caveville Coalition</h5>
+                            <ul>
+                                <li>Commander: Zoey (Caveville)</li>
+                                <li>Caveville</li>
+                                <li>Flareia (Allied support)</li>
+                                <li>E</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4>Outcome</h4>
+                    <p><strong>Victor:</strong> Believed to be Caveville & E (with Flareia support)</p>
+                    <p><strong>Consequences:</strong></p>
+                    <ul>
+                        <li>Reichpakt alliance collapsed on March 4, 2023</li>
+                        <li>All Reichpakt member nations wiped from server</li>
+                        <li>Caveville absorbed all former Reichpakt territories</li>
+                        <li>CraftedYT quit the server in early April 2023</li>
+                        <li>Caveville became undisputed superpower</li>
+                    </ul>
+                    
+                    <div class="notice">
+                        <strong>Note:</strong> Very little information is known about the Horizon Confed alliance from old server archives.
+                    </div>
+                </div>
+                
+                <div class="war">
+                    <div class="war-header">
+                        <h3 class="war-title">Flareia VS Caveville War I</h3>
+                        <span class="war-duration">2 Month War</span>
+                    </div>
+                    <p><strong>Duration:</strong> March 18 - April 18, 2023 (2 months)</p>
+                    <p><strong>Cause:</strong> Started by Minishyft "for no reason at all, just for fun"</p>
+                    
+                    <div class="belligerents">
+                        <div class="side">
+                            <h5>Flareia</h5>
+                            <ul>
+                                <li>Leader: Minishyft6243</li>
+                                <li>~5 members</li>
+                                <li>Had numerical advantage</li>
+                            </ul>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="side">
+                            <h5>Caveville</h5>
+                            <ul>
+                                <li>Leader: Zoey</li>
+                                <li>~3 members</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4>Outcome</h4>
+                    <p><strong>Victor:</strong> Inconclusive - Both nations survived</p>
+                    <p><strong>Consequences:</strong></p>
+                    <ul>
+                        <li>Both nations heavily bombed</li>
+                        <li>Both nations recovered from damage</li>
+                        <li>Beginning of Flareia-Caveville rivalry</li>
+                        <li>Server reduced to two-superpower system</li>
+                        <li>13-month silent conflict period began</li>
+                    </ul>
+                </div>
+                
+                <div class="war">
+                    <div class="war-header">
+                        <h3 class="war-title">Flareian-Caveville War II</h3>
+                        <span class="war-duration">27 Day War</span>
+                    </div>
+                    <p><strong>Duration:</strong> June 15 - July 12, 2024 (27 days)</p>
+                    <p><strong>Cause:</strong> Started by Minishyft again after 13 months of silent conflict</p>
+                    
+                    <div class="belligerents">
+                        <div class="side">
+                            <h5>Flareia</h5>
+                            <ul>
+                                <li>Leader: Minishyft6243</li>
+                            </ul>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="side">
+                            <h5>Caveville</h5>
+                            <ul>
+                                <li>Leader: Zoey</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4>War Crimes & Notable Events</h4>
+                    <ul>
+                        <li>Horse hostage situations</li>
+                        <li>Extensive griefing campaigns</li>
+                        <li>Widespread theft and raids</li>
+                        <li>Destruction of national infrastructure</li>
+                    </ul>
+                    
+                    <h4>Outcome</h4>
+                    <p><strong>Victor:</strong> None - Mutual destruction</p>
+                    <p><strong>Consequences:</strong></p>
+                    <ul>
+                        <li>Both nations completely destroyed</li>
+                        <li>Server officially ended on July 12, 2024</li>
+                        <li>Players lost interest and stopped playing</li>
+                        <li>End of the Gears of War server after 17 months</li>
+                    </ul>
+                    
+                    <div class="notice">
+                        <strong>Note:</strong> This war marked the end of the server's history, with both superpowers falling in mutual destruction.
+                    </div>
+                </div>
+            </section>
+            
+            <section id="timeline">
+                <h2>Timeline</h2>
+                <p>A chronological record of major events in the Gears of War server's history.</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">February 18, 2023</div>
+                        <p><strong>Server Launch:</strong> Gears of War server started as a Minecraft creative server owned by Tig. Minishyft6243 and ZoeyDev left spawn without Tig noticing and used /fill command to spawn 20,000 TNT blocks in a mountain several hundred blocks from spawn.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">February 21, 2023</div>
+                        <p><strong>Survival Mode Switch:</strong> Server converted to survival mode. Caveville (later known as East Caveville) was founded. The settlement quickly expanded, with the newer area becoming known simply as "Caveville" while the original became "East Caveville."</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">February 23, 2023</div>
+                        <p><strong>Petram Founded:</strong> CraftedYT branched off from East Caveville and created the nation of Petram on the opposite side. War was immediately declared on Caveville.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">February 24-25, 2023</div>
+                        <p><strong>Astro-Cavevillian War:</strong> First major server conflict. Asgrothia (CraftedYT) fought against Caveville/E (Zoey, Ice, Squad). War lasted only one day. Caveville emerged victorious. Asgrothia separated from Petram after defeat.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">February 24-26, 2023 (estimated)</div>
+                        <p><strong>4th Reich-Caveville Conflict:</strong> A concurrent conflict began alongside the Astro-Cavevillian War. Deutschland fought against Caveville in a poorly-documented conflict. Estimated to have ended in a draw around February 26, 2023. Very little information survives about this war.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">~February 26, 2023</div>
+                        <p><strong>Ownership Transfer – Tig → Ice:</strong> Tig passed ownership of the server to Ice around this time. Ice would go on to serve as owner during some of the server's earliest turbulent conflicts.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">February 25, 2023</div>
+                        <p><strong>Post-War Reformation:</strong> Following the Astro-Cavevillian War, Petram and Asgrothia reformed into Deutschland. Munich was also established as a consequence of the war.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">February 27, 2023</div>
+                        <p><strong>Canada Founded:</strong> Herodelombre, a small player, formed the nation of Canada with Quebec as its capital.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">March 1, 2023</div>
+                        <p><strong>Reichpakt Alliance Formed & Cold War I Begins:</strong> Deutschland joined with Pumice to form the Reichpakt alliance. Members included: Cherokee, Deutschland, E, and Petram. Cold War I immediately began between the Reichpakt (plus Horizon Confed) and Caveville & Flareia. Zoey commanded Caveville forces while Pumice commanded the Reichpakt. CraftedYT was widely blamed for starting the conflict.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">March 3, 2023</div>
+                        <p><strong>Cold War I Ended:</strong> Two-day conflict concluded. Caveville & E (with Flareia support) believed to have won, though official outcome unclear.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">March 4, 2023</div>
+                        <p><strong>Reichpakt Collapse:</strong> The Reichpakt alliance fell apart. All member nations (Cherokee, Deutschland, E, and Petram) were wiped from the GOW server. Caveville absorbed all former Reichpakt territories, solidifying its position as the dominant superpower.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">~March 2023</div>
+                        <p><strong>Ownership Transfer – Ice → Herodelombre:</strong> Ice passed ownership of the server to Herodelombre sometime in March. Herodelombre, already the founder of Canada, would hold the server through the lead-up to the first major Flareia-Caveville conflict.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">March 18, 2023</div>
+                        <p><strong>Flareia VS Caveville War I Begins:</strong> Minishyft6243 started a war between Flareia and Caveville "for no reason at all, just for fun." This marked the beginning of the great rivalry between the server's two remaining superpowers.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">April 1, 2023</div>
+                        <p><strong>Two-Nation System:</strong> Flareia and Caveville established as the only two major powers. Caveville had approximately 3 members while Flareia had approximately 5 members, giving Flareia the numerical advantage in the arising conflict.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">Early April 2023</div>
+                        <p><strong>CraftedYT Quits:</strong> One month after the Reichpakt collapse, CraftedYT permanently left the server.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">~April 2023</div>
+                        <p><strong>Ownership Transfer – Herodelombre → Zoey:</strong> Herodelombre passed ownership to Zoey around this time, shortly after CraftedYT's departure. Zoey, already the leader of Caveville and one of the server's most prominent figures, took on the role of server owner.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">April 18, 2023</div>
+                        <p><strong>Flareia VS Caveville War I Ended:</strong> After two months of conflict, the war concluded. Both nations were heavily bombed but both recovered from the damage. The war ended inconclusively with no clear victor.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">April 2023 - June 2024</div>
+                        <p><strong>Silent Conflict Period:</strong> For 13 months, Flareia and Caveville maintained a tense cold peace. Both superpowers continued to build strength while avoiding direct military confrontation.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">~June 2023</div>
+                        <p><strong>Ownership Transfer – Zoey → (Unknown):</strong> Zoey's ownership ended around June 2023. There is a gap of roughly two months before the next confirmed owner. It is unclear who, if anyone, held ownership of the server during this period.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">~August 2023</div>
+                        <p><strong>Ownership Transfer – (Unknown) → Minishyft6243:</strong> Minishyft6243 became the server's 5th and final owner around August 2023. He would hold ownership for nearly 11 months — the longest tenure of any single owner in the server's history.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">June 15, 2024</div>
+                        <p><strong>Flareian-Caveville War II Begins:</strong> After 13 months of silent conflict, Minishyft6243 started another war between Flareia and Caveville. This final conflict would prove to be the most brutal in server history.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">June-July 2024</div>
+                        <p><strong>War Crimes Era:</strong> The final war featured numerous atrocities including horse hostage situations, extensive griefing, widespread theft, and systematic destruction of both nations' infrastructure.</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-date">July 12, 2024</div>
+                        <p><strong>Server End:</strong> Flareian-Caveville War II concluded with both nations completely destroyed. With both superpowers in ruins and players having lost interest, the Gears of War server officially ended after 17 months of history.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="notice">
+                <p><strong>📝 Historical Note:</strong> This wiki captures the main events of the Gears of War server. Minor events, personal player interactions, and smaller incidents (such as court proceedings in Ballisia) are not documented here.</p>
+                <p style="margin-top: 0.5rem;"><strong>⚠️ Disclaimer:</strong> Information compiled from server archives and player accounts. Some details may be incomplete due to limited historical records.</p>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p><strong>Gears of War Server Archives</strong></p>
+        <p>Maintained by Minishyft6243</p>
+        <p>In memory of a legendary server (February 18, 2023 - July 12, 2024)</p>
+        <p>17 Months • 5 Major Wars • 5 Server Owners • Countless Memories</p>
+    </footer>
+    
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeText = document.getElementById('themeText');
+        const html = document.documentElement;
+        
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeText(currentTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeText(newTheme);
+        });
+        
+        function updateThemeText(theme) {
+            themeText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+        }
+    </script>
+</body>
+</html>
